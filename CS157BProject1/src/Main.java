@@ -16,12 +16,8 @@ public class Main {
 		INFO.setProperty("password", PASSWORD);
 		INFO.setProperty("useSSL", "false");
 		
-		//create database SALES_TRANSACTIONS
-		Database.CreateDB(INFO, CONN_STRING, JDBC_DRIVER);
+		//setup database SALES_TRANSACTIONS along with populated tables
+		Database.setupDB(INFO, CONN_STRING, JDBC_DRIVER);
 		
-		//defining schema for tables in database.
-		//populating SALES_TRANSACTIONS with tables
-		String SalesTransactionConnection = "jdbc:mysql://localhost/SALES_TRANSACTIONS";
-		Database.PopulateDB(INFO, SalesTransactionConnection, JDBC_DRIVER);
 	}
 }

@@ -5,8 +5,8 @@ import java.util.Properties;
 
 public class Database {
 
-	//creating database sales_transactions
-	public static void CreateDB(Properties info, String connString,
+	//set up database sales_transactions
+	public static void setupDB(Properties info, String connString,
 			String jdbcDriver) {
 		Connection conn;
 		Statement stmt;
@@ -14,7 +14,6 @@ public class Database {
 		try {
 			Class.forName(jdbcDriver);
 			
-			System.out.println("Connecting to database");
 			conn = DriverManager.getConnection(connString, info);
 			try {
 				System.out.println("Creating database SALES_TRANSACTIONS");
@@ -28,18 +27,21 @@ public class Database {
 			} catch(Exception e) {
 				e.printStackTrace();
 			} finally {
-				conn.close();
+				conn.close(); //close connection
 			}
 			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 		
+		//reconnect with Sales_Transaction database
+		String SalesTransactionConnection = "jdbc:mysql://localhost/SALES_TRANSACTIONS";
+		populateDB(info, SalesTransactionConnection, jdbcDriver);
+		
 	}
 
-	public static void PopulateDB(Properties info,
+	private static void populateDB(Properties info,
 			String salesTransactionConnection, String jdbcDriver) {
-		
 		Connection conn;
 		Statement stmt;
 		
@@ -49,15 +51,6 @@ public class Database {
 			
 			try {
 				stmt = conn.createStatement();
-				//drop table sale_transaction if it exists
-				stmt.execute("DROP TABLE IF EXISTS Sale_Transaction");
-				
-				stmt.executeUpdate("CREATE TABLE Sale_Transaction " +
-						"(CustomerID INTEGER NOT NULL AUTO_INCREMENT, " +
-						"Spent FLOAT, " +
-						"Date VARCHAR(255), " +
-						"NumberOfItems INTEGER NOT NULL, " +
-						"PRIMARY KEY (CustomerID))");
 				
 				//change destination if needed
 				FileReader file = new FileReader("C:/school/CS157BProject1/CS157BProject1/src/insert.sql");
@@ -81,7 +74,5 @@ public class Database {
 		}
 		
 	}
-	
-	
 	
 }
